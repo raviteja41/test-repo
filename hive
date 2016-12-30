@@ -1,0 +1,525 @@
+sudo wget http://redrockdigimark.com/apachemirror/db/derby/db-derby-10.13.1.1/db-derby-10.13.1.1-bin.tar.gz
+sudo tar -xzvf db-derby-10.13.1.1-bin.tar.gz -C /home/vtpl/
+ folder>db-derby-10.13.1.1-bin
+
+bashrc
+export DERBY_HOME=/home/vtpl/db-derby-10.13.1.1-bin
+export PATH=$PATH:$DERBY_HOME/bin
+
+startNetworkServer -h 0.0.0.0 &
+stopNetworkServer -h 0.0.0.0 &
+
+--------------------------------------------------------------------------------------------------------------->
+sudo wget http://redrockdigimark.com/apachemirror/hive/hive-1.2.1/apache-hive-1.2.1-bin.tar.gz
+sudo tar -xzvf apache-hive-1.2.1-bin.tar.gz -C /home/vtpl/
+  folder>apache-hive-1.2.1-bin
+
+bashrc
+export HIVE_HOME=/home/vtpl/apache-hive-1.2.1-bin
+export PATH=$PATH:$HIVE_HOME/bin
+
+sudo cp /home/vtpl/apache-hive-1.2.1-bin/conf/hive-default.xml.template /home/vtpl/apache-hive-1.2.1-bin/conf/hive-site.xml
+export DERBY_HOME=/home/vtpl/db-derby-10.13.1.1-bin
+export PATH=$PATH:$DERBY_HOME/bin
+
+ <property>
+<name>hive.metastore.warehouse.dir</name>
+<value>/home/vtpl/warehouse</value>
+</property>
+<property>
+<name>hive.metastore.local</name>
+<value>true</value>
+</property>
+<property>
+<name>javax.jdo.option.ConnectionURL</name>
+<value>jdbc:derby:;databaseName=/home/vtpl/warehouse/metastore_db;create=true</value>
+</property>   
+
+sudo apt-get install -f
+sudo dpkg --configure -a
+
+ sudo apt-get install mysql-server mysql-client
+sudo service mysql start/restart
+mysql -u root -p 
+enter the password:hadoop
+
+show databases;
+
+exit;
+sudo service mysql stop
+
+sudo wget http://mirrors.dotsrc.org/mysql/Downloads/Connector-J/mysql-connector-java-5.1.18.tar.gz
+sudo cp /home/vtpl/mysql-connector-java-5.1.18/mysql-connector-java-5.1.18-bin.jar /home/vtpl/apache-hive-1.2.1-bin/lib/
+
+hive with mysql
+<property>
+<name>javax.jdo.option.ConnectionURL</name>
+<value>jdbc:mysql://localhost:3306/hive_db?createDatabaseIfNotExist=true</value>
+</property>
+<property>
+<name>javax.jdo.option.ConnectionDriverName</name>
+<value>com.mysql.jdbc.Driver</value>
+</property>
+<property>
+<name>javax.jdo.option.ConnectionUserName</name>
+<value>root</value>
+</property>
+<property>
+<name>javax.jdo.option.ConnectionPassword</name>
+<value>hadoop</value>
+</property>
+----------------------------------------------------------------------------------------------------------------->
+hbase:
+sudo wget http://redrockdigimark.com/apachemirror/hbase/stable/hbase-1.2.4-bin.tar.gz
+sudo tar -xzvf hbase-1.2.4-bin.tar.gz -C /home/vtpl/
+
+hbase-1.2.4
+
+export HBASE_HOME=/home/vtpl/hbase-1.2.4
+export PATH=$PATH:$HBASE_HOME/bin
+
+cd /home/vtpl/hbase-1.2.4/conf/
+
+<configuration>
+<property>
+    <name>hbase.rootdir</name>
+    <value>hdfs://localhost:9000/hbase</value>
+  </property>
+  <property>
+    <name>hbase.cluster.distributed</name>
+    <value>false</value>
+  </property>
+</configuration>
+
+
+new hbase-site.xml
+
+<configuration>
+<property>
+    <name>hbase.rootdir</name>
+    <value>hdfs://localhost:9000/hbase</value>
+  </property>
+  <property>
+    <name>hbase.cluster.distributed</name>
+    <value>true</value>
+  </property>
+  <property>
+    <name>hbase.zookeeper.quorum</name>
+    <value>localhost</value>
+  </property>
+  <property>
+    <name>hbase.zookeeper.property.dataDir</name>
+    <value>file:/home/vtpl/zoo_data</value>
+  </property>
+<property>
+    <name>hbase.zookeeper.property.clientPort</name>
+    <value>2181</value>
+    </property>
+
+hbase-env.sh
+-------------------------------------------------------------------------------------------------------->
+sudo chmod 777  logs
+192.168.0.250 7070 kylin ADMIN kylin
+
+sudo tar -xzvf apache-kylin-1.6.0-hbase1.x-bin.tar.gz -C /home/vtpl/
+
+-------------------------------------------------------------------------------------------------------->
+ sudo wget http://www.redrockdigimark.com/apachemirror/zookeeper/stable/zookeeper-3.4.9.tar.gz
+sudo tar -xzvf zookeeper-3.4.9.tar.gz -C /home/vtpl/
+
+zoo.cfg
+dataDir=/home/vtpl/zoo_data
+server.1=localhost:2888:3888
+-------------------------------------------------------------------------------------------------------->
+
+export JAVA_HOME=/usr/lib/jvm/java-8-oracle
+export HADOOP_HOME=/home/vtpl/hadoop-2.7.3
+export HADOOP_INSTALL=/home/vtpl/hadoop-2.7.3
+export PATH=$PATH:$HADOOP_INSTALL/bin
+export PATH=$PATH:$HADOOP_INSTALL/sbin
+export HADOOP_MAPRED_HOME=$HADOOP_INSTALL
+export HADOOP_COMMON_HOME=$HADOOP_INSTALL
+export HADOOP_HDFS_HOME=$HADOOP_INSTALL
+export YARN_HOME=$HADOOP_INSTALL
+export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_INSTALL/lib/native
+export HADOOP_OPTS="-Djava.library.path=$HADOOP_INSTALL/lib/native"
+
+export KYLIN_HOME=/home/vtpl/kylin
+export PATH=$PATH:$KYLIN_HOME/bin
+export DERBY_HOME=/home/vtpl/db-derby-10.13.1.1-bin
+export PATH=$PATH:$DERBY_HOME/bin
+export HIVE_HOME=/home/vtpl/apache-hive-1.2.1-bin
+export PATH=$PATH:$HIVE_HOME/bin
+export HBASE_HOME=/home/vtpl/hbase-1.2.4
+export PATH=$PATH:$HBASE_HOME/bin
+export ZOOKEEPER_HOME=/home/vtpl/zookeeper-3.4.9
+export PATH=$ZOOKEEPER_HOME/bin:$PATH
+
+---------------------------------------------------------------------------------------------------------------------------------->
+
+USE default;
+DROP TABLE IF EXISTS kylin_intermediate_vtplrootonecube_dd8e2803_2f91_4d90_8b96_01cf34ca735f;
+CREATE EXTERNAL TABLE IF NOT EXISTS kylin_intermediate_vtplrootonecube_dd8e2803_2f91_4d90_8b96_01cf34ca735f
+(
+DEFAULT_KYLIN_SALES_PART_DT date
+,DEFAULT_KYLIN_SALES_LSTG_FORMAT_NAME string
+,DEFAULT_KYLIN_SALES_LEAF_CATEG_ID bigint
+,DEFAULT_KYLIN_SALES_LSTG_SITE_ID int
+,DEFAULT_KYLIN_SALES_PRICE decimal(19,4)
+,DEFAULT_KYLIN_SALES_SELLER_ID bigint
+)
+STORED AS SEQUENCEFILE
+LOCATION '/kylin/kylin_metadata/kylin-4a7fc4a2-f2eb-4f91-b2a4-d688a1839d60/kylin_intermediate_vtplrootonecube_dd8e2803_2f91_4d90_8b96_01cf34ca7
+
+SET dfs.replication=2;
+SET hive.exec.compress.output=true;
+SET hive.auto.convert.join.noconditionaltask=true;
+SET hive.auto.convert.join.noconditionaltask.size=100000000;
+SET mapreduce.output.fileoutputformat.compress.type=BLOCK;
+SET mapreduce.job.split.metainfo.maxsize=-1;
+INSERT OVERWRITE TABLE kylin_intermediate_vtplrootonecube_dd8e2803_2f91_4d90_8b96_01cf34ca735f SELECT
+KYLIN_SALES.PART_DT
+,KYLIN_SALES.LSTG_FORMAT_NAME
+,KYLIN_SALES.LEAF_CATEG_ID
+,KYLIN_SALES.LSTG_SITE_ID
+,KYLIN_SALES.PRICE
+,KYLIN_SALES.SELLER_ID
+FROM DEFAULT.KYLIN_SALES as KYLIN_SALES
+WHERE (price > 0)  AND (KYLIN_SALES.PART_DT >= '2011-12-31' AND KYLIN_SALES.PART_DT < '2012-12-31')
+;
+
+
+"name": "vtplrootonecube",
+  "model_name": "vtplrootonemodel",
+  "description": "",
+  "dimensions": [
+    {
+      "name": "PART_DT",
+      "table": "DEFAULT.KYLIN_SALES",
+      "derived": null,
+      "column": "PART_DT"
+    },
+    {
+      "name": "LSTG_FORMAT_NAME",
+      "table": "DEFAULT.KYLIN_SALES",
+      "derived": null,
+      "column": "LSTG_FORMAT_NAME"
+    },
+    {
+      "name": "LEAF_CATEG_ID",
+      "table": "DEFAULT.KYLIN_SALES",
+      "derived": null,
+
+"dimensions": [
+    {
+      "name": "PART_DT",
+      "table": "DEFAULT.KYLIN_SALES",
+      "derived": null,
+      "column": "PART_DT"
+    },
+    {
+      "name": "LSTG_FORMAT_NAME",
+      "table": "DEFAULT.KYLIN_SALES",
+      "derived": null,
+      "column": "LSTG_FORMAT_NAME"
+    },
+    {
+      "name": "LEAF_CATEG_ID",
+      "table": "DEFAULT.KYLIN_SALES",
+      "derived": null,
+      "column": "LEAF_CATEG_ID"
+    },
+    {
+      "name": "LSTG_SITE_ID",
+      "table": "DEFAULT.KYLIN_SALES",
+      "derived": null,
+      "column": "LSTG_SITE_ID"
+    },
+    {
+      "name": "YEAR_BEG_DT",
+      "table": "DEFAULT.KYLIN_CAL_DT",
+      "derived": [
+        "YEAR_BEG_DT"
+      ],
+      "column": null
+    },
+    {
+      "name": "QTR_BEG_DT",
+      "table": "DEFAULT.KYLIN_CAL_DT",
+{
+      "name": "MONTH_BEG_DT",
+      "table": "DEFAULT.KYLIN_CAL_DT",
+      "derived": [
+        "MONTH_BEG_DT"
+      ],
+      "column": null
+    },
+    {
+      "name": "WEEK_BEG_DT",
+      "table": "DEFAULT.KYLIN_CAL_DT",
+      "derived": [
+        "WEEK_BEG_DT"
+      ],
+      "column": null
+    }
+  ],
+"measures": [
+    {
+      "name": "_COUNT_",
+      "function": {
+        "expression": "COUNT",
+        "returntype": "bigint",
+        "parameter": {
+          "type": "constant",
+          "value": "1",
+          "next_parameter": null
+        },
+        "configuration": {}
+      }
+    },
+    {
+      "name": "total_price",
+      "function": {
+        "expression": "SUM",
+        "returntype": "decimal(19,4)",
+        "parameter": {
+          "type": "column",
+          "value": "PRICE",
+          "next_parameter": null
+        },
+        "configuration": null
+      }
+    },
+    {
+      "name": "min_price",
+      "function": {
+        "expression": "MIN",
+        "returntype": "decimal(19,4)",
+        "parameter": {
+          "type": "column",
+          "value": "PRICE",
+       "configuration": null
+      }
+    },
+    {
+      "name": "max_price",
+      "function": {
+        "expression": "MAX",
+        "returntype": "decimal(19,4)",
+        "parameter": {
+          "type": "column",
+          "value": "PRICE",
+          "next_parameter": null
+        },
+        "configuration": null
+      }
+    },
+    {
+      "name": "TOP_SELLER",
+      "function": {
+        "expression": "TOP_N",
+        "returntype": "topn(100)",
+        "parameter": {
+          "type": "column",
+          "value": "PRICE",
+          "next_parameter": {
+            "type": "column",
+            "value": "SELLER_ID",
+            "next_parameter": null
+          }
+        },
+        "configuration": {
+          "topn.encoding.SELLER_ID": "dict"
+        }
+      }
+    }
+  ],
+ "dictionaries": [],
+  "rowkey": {
+    "rowkey_columns": [
+      {
+        "column": "PART_DT",
+        "encoding": "dict",
+        "isShardBy": "false"
+      },
+      {
+        "column": "LSTG_FORMAT_NAME",
+        "encoding": "dict",
+        "isShardBy": "false"
+      },
+      {
+        "column": "LEAF_CATEG_ID",
+        "encoding": "dict",
+        "isShardBy": "false"
+      },
+      {
+
+   "rowkey_columns": [
+      {
+        "column": "PART_DT",
+        "encoding": "dict",
+        "isShardBy": "false"
+      },
+      {
+        "column": "LSTG_FORMAT_NAME",
+        "encoding": "dict",
+        "isShardBy": "false"
+      },
+      {
+        "column": "LEAF_CATEG_ID",
+        "encoding": "dict",
+        "isShardBy": "false"
+      },
+      {
+        "column": "LSTG_SITE_ID",
+        "encoding": "dict",
+        "isShardBy": "false"
+      }
+    ]
+  },
+  "aggregation_groups": [
+    {
+      "includes": [
+        "PART_DT",
+        "LSTG_FORMAT_NAME",
+        "LEAF_CATEG_ID",
+        "LSTG_SITE_ID"
+      ],
+      "select_rule": {
+        "hierarchy_dims": [],
+        "mandatory_dims": [],
+        "joint_dims": []
+      }
+ "partition_date_start": 1325289600000,
+  "notify_list": [],
+  "hbase_mapping": {
+    "column_family": [
+      {
+        "name": "f1",
+        "columns": [
+          {
+            "qualifier": "m",
+            "measure_refs": [
+              "_COUNT_",
+              "total_price",
+              "min_price",
+              "max_price",
+              "TOP_SELLER"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "retention_range": 15552000000,
+  "status_need_notify": [
+    "ERROR",
+    "DISCARDED",
+    "SUCCEED"
+  ],
+  "auto_merge_time_ranges": [
+    604800000,
+    2419200000
+  ],
+  "engine_type": 2,
+  "storage_type": 2,
+  "override_kylin_properties": {}
+}
+------------------------------------------------------------------------------------------------------------------------->
+sudo wget http://www-us.apache.org/dist/knox/0.10.0/knox-0.10.0.tar.gz
+sudo tar -xzvf knox-0.10.0.tar.gz -C /home/vtpl/
+sudo wget http://www-us.apache.org/dist/knox/0.10.0/knox-0.10.0.tar.gz.asc
+sudo wget http://www-us.apache.org/dist/knox/KEYS
+knox-0.10.0
+gpg --recv-keys 5072E1F5
+export GATEWAY_HOME=/home/vtpl/knox-0.10.0
+export PATH=$PATH:$GATEWAY_HOME/bin
+  
+% pgpk -a KEYS
+% pgpv knox-0.10.0.tar.gz.asc
+
+gpg --import KEYS
+
+gpg: directory `/home/vtpl/.gnupg' created
+gpg: new configuration file `/home/vtpl/.gnupg/gpg.conf' created
+gpg: WARNING: options in `/home/vtpl/.gnupg/gpg.conf' are not yet active during this run
+gpg: keyring `/home/vtpl/.gnupg/secring.gpg' created
+gpg: keyring `/home/vtpl/.gnupg/pubring.gpg' created
+gpg: /home/vtpl/.gnupg/trustdb.gpg: trustdb created
+gpg: key 587C089B: public key "Larry McCay (CODE SIGNING KEY) <lmccay@apache.org>" imported
+gpg: key EACB2DAE: public key "Kevin Minder (Code signing) <kminder@apache.org>" imported
+gpg: key 02C74EAE: public key "Sumit Gupta <sumit@apache.org>" imported
+gpg: Total number processed: 3
+gpg:               imported: 3  (RSA: 3)
+gpg: no ultimately trusted keys found
+
+gpg --verify knox-0.10.0.tar.gz.asc
+
+gpg: Signature made Wednesday 02 November 2016 02:59:56 AM UTC using RSA key ID 02C74EAE
+gpg: Good signature from "Sumit Gupta <sumit@apache.org>"
+gpg: WARNING: This key is not certified with a trusted signature!
+gpg:          There is no indication that the signature belongs to the owner.
+Primary key fingerprint: 16CE 46FA FF06 3F3E AF48  2A99 2B58 42B9 02C7 4EAE
+
+vtpl@vtpl-srv-01:~$ cd knox-0.10.0/
+-bash: cd: knox-0.10.0/: Permission denied
+
+gpg: key 587C089B: public key "Larry McCay (CODE SIGNING KEY) <lmccay@apache.org>" imported
+gpg: key EACB2DAE: public key "Kevin Minder (Code signing) <kminder@apache.org>" imported
+gpg: key 02C74EAE: public key "Sumit Gupta <sumit@apache.org>" imported
+  
+gpg --recv-keys 587C089B
+gpg --recv-keys EACB2DAE
+gpg --recv-keys 02C74EAE
+
+root@vtpl-srv-01:/home/vtpl/knox-0.10.0/bin# ldap.sh start
+Starting LDAP succeeded with PID 6063.
+
+root@vtpl-srv-01:/home/vtpl/knox-0.10.0/bin# knoxcli.sh create-master
+***************************************************************************************************
+You have indicated that you would like to persist the master secret for this service instance.
+Be aware that this is less secure than manually entering the secret on startup.
+The persisted file will be encrypted and primarily protected through OS permissions.
+***************************************************************************************************
+Enter master secret: 
+Enter master secret again: 
+Master secret has been persisted to disk.
+----------------------------------------------------------------------------------------------------------------------------->
+http://hortonworks.com/training/certification/hdpca-certification/
+http://hortonworks.com/wp-content/uploads/2015/04/DataSheet_HDPCA_2.3.pdf
+http://docs.hortonworks.com/HDPDocuments/HDP2/HDP-2.5.3/bk_hdfs-administration/content/ch01.html
+
+hive-env.sh,hive-site.xml
+root@vtpl-srv-01:~# hdfs dfs -mkdir -p /user/hive/warehouse
+root@vtpl-srv-01:~# hdfs dfs -mkdir -p /tmp/hive
+root@vtpl-srv-01:~# hdfs dfs -chmod 777 /tmp
+root@vtpl-srv-01:~# hdfs dfs -chmod 777 /user/hive/warehouse
+root@vtpl-srv-01:~# hdfs dfs -chmod 777 /tmp/hive
+
+<property>
+   <name>hive.querylog.location</name>
+   <value>/tmp/hive</value>
+   <description>Location of Hive run time structured log file</description>
+</property>
+
+<property>
+   <name>hive.exec.local.scratchdir</name>
+   <value>/tmp/hive</value>
+   <description>Local scratch space for Hive jobs</description>
+</property>
+
+<property>
+   <name>hive.downloaded.resources.dir</name>
+   <value>/tmp/hive</value>
+   <description>Temporary local directory for added resources in the remote file system.</description>
+</property>
+
+http://stackoverflow.com/questions/28536340/hive-shell-not-opening-when-i-have-hive-site-xml
+https://nofluffjuststuff.com/blog/mark_johnson/2016/02/5_steps_to_get_started_running_spark_on_yarn_with_a_hadoop_cluster
+
+http://data-flair.training/blogs/install-configure-run-apache-spark-2-x-single-node/
+https://www.quora.com/How-do-I-set-up-Apache-Spark-with-Yarn-Cluster
+http://backtobazics.com/big-data/setup-multi-node-hadoop-2-6-0-cluster-with-yarn/
+http://backtobazics.com/big-data/6-steps-to-setup-apache-spark-1-0-1-multi-node-cluster-on-centos/
+http://why-not-learn-something.blogspot.in/2015/06/spark-installation-pseudo.html
+http://docs.hortonworks.com/HDPDocuments/HDP2/HDP-2.4.3/bk_installing_manually_book/content/ch_getting_ready_chapter.html
