@@ -1,0 +1,81 @@
+hive is very useful for adhoc querying
+you have to specify the schema explicitly
+for sql sql engine is there, similarly for hive hive engine is there
+
+same like sql
+hive queries also have three types
+
+DDL(create,alter,drop) here in creating the tables you have to specify the schema
+
+DML(remember you can't update, you can do only loading,inserting(related to reading HDFS)in the view of manipulating )
+
+DQL(similar to sql like operations, order of the queries will be in the following way
+from(which table),where(what type of filtering like >,<,=,....),groupby,having,select(specifies the required columns)
+
+Related to DDL one important concept is
+You can create two types of tables(managed table and external table)
+
+difference between managed tables and external tables
+
+Hive (has/will have) a relational database on the master node(name node)it uses to keep track of state(metadata). For instance, when you CREATE TABLE SAMPLE(col1 string) LOCATION 'hdfs://tmp/';, (for you (hdfs)location may be different ask them,ask your admin also what is the hive metastore path)this table schema is stored in the database.(default is derby, but mostly companies will use mysql,oracle.... depends on the requirement)
+
+If you have a partitioned table, the partitions are stored in the database(this allows hive to use lists of partitions without going to the file-system and finding them,(table name,column names,sizes,datatypes etc). These sorts of things are the 'metadata'.
+
+When you drop an managed(internal) table, it drops the data, and it also drops the metadata.
+
+When you drop an external table, it only drops the meta data. That means hive is ignorant of that data now. It does not touch the data itself. 
+
+>create (external) table sometable(col1 type,col2 type,col3 type) row format delimited fields terminated by ',' ;               // means you are creating a csv file
+
+>load data local inpath '/home/....../table.txt' into table sometable ; // here you are inserting the data from local file system to hadoop file system,hive table if you delete the table
+
+1.if the table(sometable) you created is managed table (table.txt data will be there in local file system but not in hdfs,hive metadata storage location)
+
+2.if the table(sometable) you created is external table(table.txt data will be there in local file system and hdfs also,but in hive metadata storage location it deletes the metadata of table)
+
+>load data  inpath '/home/....../table.txt' into table sometable ; // here you are inserting the data from hadoop file system to hive table if you delete the table
+
+1.if the table(sometable) you created is managed table (table.txt data will not be there in hdfs and hive metadata storage location)
+
+2.if the table(sometable) you created is external table(table.txt data will be there in hdfs also,but in hive metadata storage location it deletes the metadata of table)
+
+to start hive on terminal
+>hive
+to see databases
+>show databases;
+to use
+>use dbname;
+some practice queries
+>create database test1;
+>show databases;
+>use test1;
+>show tables;
+
+>create table dummy(c1 int,c2 float)//default managed tables, but in companies they may use external tables for that syntax will be
+
+>create external table dummy(c1 int,c2 float)
+actual syntax will be more check once
+
+Datatypes:All primitive types will be there.Stress on complex types ARRAY(to store same type of elements),STRUCT(to store different types of elements),MAP(key,value pairs key must be primitive type)see how to access these complex types columns
+
+suppose if you have the complex data like the following
+
+(1,abz,50000,y$b$c,pf#500$epf#200,bglr$kshama$5005555)
+
+here y$b$c is the ARRAY of items seperated by $
+
+pf#500$epf#200 is the MAP(key,value) pairs (pf#500) $ (epf#200) seperated by $
+
+bglr$kshama$5005555 is the STRUCT storing different type seperated by $
+
+//create the table
+create table fortest(id int,name string,sal bigint,sub array<string>,ded map<string,int>,adr struct<city:string,state:string,pin:bigint>)row format delimited
+fields terminated by ‘,’
+collection items terminated by ‘$’
+map keys terminated by ‘#’;
+
+//load the table
+load data local inpath ‘/home/.... the path for that complex data’ into table fortest;
+
+//you can access these complex data types by the following way
+select adr.city, ded["pf"], sub[0] from fortest;
