@@ -1,0 +1,150 @@
+hadoop psuedo-mode installation
+--------------------------------------------->
+
+1.download tar file from apache mirror site(here hadoop 2.7.1) and place in folder where you want to access ( i placed it in /home/vishal/)
+
+2.check the java path and note it down
+
+3.untar the file
+
+4.Make password less access using ssh by the following commands
+>ssh localhost(here it will ask password)
+>ssh-keygen -t rsa -P ""
+>cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+>ssh localhost(here it should not ask password)
+
+4.goto ~/hadoop-2.7.1/etc/hadoop and change the following configurations
+
+ core-site.xml
+-------------------------->
+<property>
+        <name>fs.defaultFS</name>
+        <value>hdfs://localhost:9000</value>
+</property>
+
+ hadoop-env.sh
+-------------------------->
+export JAVA_HOME="/usr/lib/jvm/java-8-oracle"
+
+ hdfs-site.xml
+-------------------------->
+<property>
+        <name>dfs.replication</name>
+        <value>1</value>
+    </property>
+<property>
+    <name>dfs.namenode.name.dir</name>
+    <value>file:/home/vishal/hadoop2/yarn_data/hdfs/namenode</value>
+</property>
+<property>
+    <name>dfs.datanode.data.dir</name>
+    <value>file:/home/vishal/hadoop2/yarn_data/hdfs/datanode</value>
+</property>
+
+ mapred-site.xml
+-------------------------->
+<property>
+    <name>mapreduce.framework.name</name>
+    <value>yarn</value>
+</property>
+
+ yarn-site.xml
+-------------------------->
+<property>
+    <name>yarn.nodemanager.aux-services</name>
+    <value>mapreduce_shuffle</value>
+</property>
+
+5.open the terminal and format the namenode for the first and last time (format it when you want to delete the data)
+ > hdfs namenode -format
+
+6.start hadoop with start-all.sh command
+
+7.stop hadoop with stop-all.sh command
+
+HDFS operations
+---------------------------------------------------------------->
+
+to place files in hadoop file system from localfile system similar to put command is copyFromLocal,moveFromLocal
+
+hadoop fs -put /home/vishal/Desktop/DroppedText.txt /
+
+to see the files in hadoop file system
+
+hadoop fs -ls /
+hadoop fs -lsr /
+hadoop fs -ls -R /
+
+to make directories
+
+hadoop fs -mkdir /ravi
+
+to get the contents of file
+
+hadoop fs -cat /ravi/hdfs1.txt
+
+to place the contents in local filesystem from hadoop filesystem, and by merging all files the command is getmerge, similar to get command the other commands are copyToLocal,moveToLocal 
+
+hadoop fs -get /ravi/hdfs1.txt ~/
+
+
+hadoop fs -du /
+hadoop fs -dus /
+hadoop fs -du -s /
+
+within hdfs
+-------------------------------------------------------------->
+hadoop fs -mv /ravi/hdfs1.txt /
+hadoop fs -cp /ravi/hdfs1.txt /
+
+hadoop fs -rm /hdfs1.txt
+hadoop fs -rmr /hdfs1.txt
+hadoop fs -rm -R /hdfs1.txt
+
+
+https://www.cloudera.com/documentation/enterprise/5-5-x/topics/cdh_ig_init_configure.html#topic_27_2
+https://www.datameer.com/documentation/display/DAS50/Starting+Hadoop+Cluster+at+boot+time
+http://serverfault.com/questions/417997/cant-start-hadoop-from-an-init-d-script
+https://www.cloudera.com/documentation/enterprise/5-8-x/topics/cdh_ig_daemon_config_boot.html
+http://codinghassle.blogspot.in/2014/06/hadoop-does-not-stop-missing-pid-files.html
+
+
+/home/vishal/mongodb-linux-x86_64-ubuntu1404-3.4.2/bin
+
+ use learn
+ db.unicorns.insert({name: 'Aurora',gender:'f',weight:450})
+show collections
+db.getCollectionNames()
+ db.unicorns.find()
+ db.unicorns.getIndexes()
+db.unicorns.insert({name:'Leto',gender:'m',home:'Arrakeen',worm:false})
+ db.unicorns.find()
+db.unicorns.find().pretty()
+db.unicorns.remove({gender:'f'})
+ db.unicorns.find().pretty()
+ db.unicorns.remove({})
+
+
+db.unicorns.find({gender: 'm',
+weight: {$gt: 700}})
+db.unicorns.find({gender: {$ne: 'f'},
+weight: {$gte: 701}})
+db.unicorns.find({
+vampires: {$exists: false }})
+db.unicorns.find({
+loves: {$in:['apple','orange']}})
+db.unicorns.find({gender: 'f',
+$or: [{loves: 'apple'},
+{weight: {$lt: 500}}]})
+db.unicorns.find(
+{_id: ObjectId("TheObjectId")})
+
+http://stackoverflow.com/questions/11270509/putting-a-remote-file-into-hadoop-without-copying-it-to-local-disk
+https://www.tutorialspoint.com/hadoop/hadoop_multi_node_cluster.htm
+https://support.rackspace.com/how-to/getting-data-into-your-big-data-cluster/
+https://www.dezyre.com/hadoop-tutorial/hadoop-multinode-cluster-setup
+
+
+
+
+

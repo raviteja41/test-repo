@@ -1,0 +1,4 @@
+today is a first day
+the task for today is hadoop installation
+doing hdfs operations
+so far everything is fine
