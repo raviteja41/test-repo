@@ -1,0 +1,48 @@
+nannu@t-lt-030:~$ hadoop key create ravikeyone
+ravikeyone has been successfully created with options Options{cipher='AES/CTR/NoPadding', bitLength=128, description='null', attributes=null}.
+KMSClientProvider[http://t-lt-030:16000/kms/v1/] has been updated.
+nannu@t-lt-030:~$ hadoop fs -mkdir /ravikmsexperiment
+nannu@t-lt-030:~$ hadoop fs -chmod -R 777 /ravikmsexperiment
+nannu@t-lt-030:~$ hdfs crypto -createZone -keyName ravikeyone -path /ravikmsexperiment 
+Added encryption zone /ravikmsexperiment
+
+nannu@t-lt-030:~$ hadoop key create nannukeyone
+nannukeyone has been successfully created with options Options{cipher='AES/CTR/NoPadding', bitLength=128, description='null', attributes=null}.
+KMSClientProvider[http://t-lt-030:16000/kms/v1/] has been updated.
+nannu@t-lt-030:~$ hadoop fs -mkdir /nannukmsexperiment
+nannu@t-lt-030:~$ hadoop fs -chmod -R 777 /nannukmsexperiment
+nannu@t-lt-030:~$ hdfs crypto -createZone -keyName nannukeyone -path /nannukmsexperiment
+Added encryption zone /nannukmsexperiment
+
+nannu@t-lt-030:~$ touch ravifile
+nannu@t-lt-030:~$ touch nannufile
+
+nannu@t-lt-030:~$ hadoop fs -copyFromLocal /home/nannu/ravifile /ravikmsexperiment
+nannu@t-lt-030:~$ hadoop fs -copyFromLocal /home/nannu/nannufile /nannukmsexperiment
+
+nannu@t-lt-030:~$ hadoop fs -ls -R /ravikmsexperiment
+-rw-r--r--   1 nannu supergroup          0 2017-03-17 16:27 /ravikmsexperiment/ravifile
+nannu@t-lt-030:~$ hadoop fs -ls -R /nannukmsexperiment
+-rw-r--r--   1 nannu supergroup          0 2017-03-17 16:28 /nannukmsexperiment/nannufile
+
+nannu@t-lt-030:~$ hadoop fs -put /ravikmsexperiment/ravifile /nannukmsexperimentput
+: `/ravikmsexperiment/ravifile': No such file or directory
+nannu@t-lt-030:~$ hadoop fs -put /nannuexperiment/nannufile /ravikmsexperiment
+put: `/nannuexperiment/nannufile': No such file or directory
+
+nannu@t-lt-030:~$ hadoop fs -mkdir /justtocheck
+nannu@t-lt-030:~$ hadoop fs -copyFromLocal /home/nannu/ravifile /justtocheck
+nannu@t-lt-030:~$ hadoop fs -ls -R /justtocheck
+-rw-r--r--   1 nannu supergroup          0 2017-03-17 16:34 /justtocheck/ravifile
+nannu@t-lt-030:~$ hadoop fs -put /justtocheck/ravifile /
+put: `/justtocheck/ravifile': No such file or directory
+nannu@t-lt-030:~$ hadoop fs -chmod -R 777 /justtocheck
+nannu@t-lt-030:~$ hadoop fs -ls -R /justtocheck
+-rwxrwxrwx   1 nannu supergroup          0 2017-03-17 16:34 /justtocheck/ravifile
+nannu@t-lt-030:~$ hadoop fs -put /justtocheck/ravifile /
+put: `/justtocheck/ravifile': No such file or directory
+nannu@t-lt-030:~$ hadoop fs -get /justtocheck/ravifile /
+get: /ravifile._COPYING_ (Permission denied)
+
+https://www.quora.com/What-is-the-best-way-to-learn-Linux-and-Shell-scripting-for-a-beginner
+https://dzone.com/articles/hadoop-26-and-native
