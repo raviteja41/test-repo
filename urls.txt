@@ -1,0 +1,7 @@
+amilaparanawithana.blogspot.in/2012/06/bulk-loading-external-data-to-cassandra.html
+https://github.com/PatrickCallaghan/datastax-bulkloader-writer-example
+http://stackoverflow.com/questions/3548259/merging-multiple-files-into-one-within-hadoop
+http://www.journaldev.com/1359/java-jmx-client-example-authentication
+http://javadox.com/org.apache.cassandra/cassandra-all/2.0.4/org/apache/cassandra/io/sstable/SSTableLoader.html
+http://www.programcreek.com/java-api-examples/index.php?api=org.apache.cassandra.io.sstable.CQLSSTableWriter
+http://www.programcreek.com/java-api-examples/index.php?source_dir=CassandraQoS-master/cassandra/src/java/org/apache/cassandra/hadoop/cql3/CqlBulkRecordWriter.java
