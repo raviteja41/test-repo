@@ -1,0 +1,20 @@
+CREATE INDEX yfs_additional_attribute_parent_key_idx ON ynap.yfs_additional_attribute (parent_key);
+CREATE INDEX yfs_inventory_item_item_id_idx ON ynap.yfs_inventory_item (item_id);
+CREATE INDEX yfs_charge_category_charge_category_idx ON ynap.yfs_charge_category (charge_category);
+CREATE INDEX yfs_charge_category_document_type_idx ON ynap.yfs_charge_category (document_type);
+CREATE INDEX yfs_item_item_id_idx ON ynap.yfs_item (item_id);
+CREATE INDEX yfs_organization_organization_code_idx ON ynap.yfs_organization (organization_code);
+CREATE INDEX yfs_charge_name_charge_name_idx ON ynap.yfs_charge_name (charge_name);
+
+CREATE INDEX df_tran_shipment_receipt_shipment_key_idx ON ynap.df_tran_shipment_receipt (shipment_key);
+CREATE INDEX df_tran_order_invoice_info_order_header_key_idx ON ynap.df_tran_order_invoice_info (order_header_key);
+CREATE INDEX df_tran_order_info_item_ids_idx ON ynap.df_tran_order_info (values(item_ids));
+CREATE INDEX df_tran_order_hold_type_order_header_key_idx ON ynap.df_tran_order_hold_type (order_header_key);
+CREATE INDEX df_tran_shipment_info_order_header_key_idx ON ynap.df_tran_shipment_info (order_header_key);
+CREATE INDEX df_tran_misc_info_customer_id_idx ON ynap.df_tran_misc_info (customer_id);
+CREATE INDEX df_tran_misc_info_order_header_key_idx ON ynap.df_tran_misc_info (order_header_key);
+CREATE INDEX df_tran_order_header_buyer_user_id_idx ON ynap.df_tran_order_header (buyer_user_id);
+CREATE INDEX df_tran_order_header_ship_to_key_idx ON ynap.df_tran_order_header (ship_to_key);
+CREATE INDEX df_tran_order_header_order_no_idx ON ynap.df_tran_order_header (order_no);
+CREATE INDEX df_tran_order_header_bill_to_key_idx ON ynap.df_tran_order_header (bill_to_key);
+CREATE INDEX df_tran_order_header_order_header_key_idx ON ynap.df_tran_order_header (bill_to_id);
