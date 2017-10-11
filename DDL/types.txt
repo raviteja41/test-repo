@@ -1,3 +1,2 @@
-CREATE TYPE ynap.ynapnestedmap (
     so_nestedmap map<text, text>
 );

@@ -1,20 +1,3 @@
-CREATE TABLE ynap.yfs_status (
-    status_key text PRIMARY KEY,
-    createprogid text,
-    createts timestamp,
-    createuserid text,
-    description text,
-    lockid decimal,
-    modifyprogid text,
-    modifyts timestamp,
-    modifyuserid text,
-    owner_key text,
-    process_type_key text,
-    requires_collaboration text,
-    status text,
-    status_name text,
-    status_type text
-);
 CREATE TABLE ynap.yfs_additional_attribute (
     additional_attribute_key text,
     parent_key text,
