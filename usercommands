@@ -1,0 +1,50 @@
+sudo groupadd kerberos
+sudo groupdel kerberos
+
+sudo adduser --home /home/cluster cluster
+sudo deluser cluster
+
+sudo usermod -aG sudo cluster
+
+passwd cluster
+
+to change the primary group
+sudo usermod -g kerberos cluster
+
+sudo deluser cluster
+
+
+discarded:
+useradd -g kerberos cluster
+
+
+-----------------------------------
+apt-get install krb5-kdc
+
+/etc/krb5.conf
+
+3:36
+----------------------------------
+apt-get install krb5-admin-server
+
+krb5_newrealm
+
+
+/etc/krb5kdc/kadm5.acl
+ 5:50
+---------------------------------
+service krb5-kdc restart
+service krb5-admin-server restart
+
+kadmin.local
+
+addprinc root/admin
+q
+
+kinit root/admin
+
+klist
+
+kadmin -p root/admin
+
+listprincs

@@ -1,0 +1,110 @@
+Our test system will be called monarch.spinlock.hr and have an IP address of 192.168.7.12. Both the server and the client will be installed on the same machine. However, to differentiate between client and server roles, the client will be referred to as monarch.spinlock.hr and the server as krb1.spinlock.hr. The following addition will be made to /etc/hosts to completely support this scheme:
+
+192.168.7.12	monarch.spinlock.hr monarch krb1.spinlock.hr krb1
+
+-------------------------------------------------------------------------------------------------->
+server installation
+-------------------
+1.sudo apt-get install krb5-{admin-server,kdc}
+
+Default Kerberos version 5 realm? SPINLOCK.HR
+# (Your domain name in uppercase - a standard for naming Kerberos realms)
+
+Add locations of default Kerberos servers to /etc/krb5.conf? Yes
+# (Adding entries to krb.conf instead of DNS, for simplicity)
+
+Kerberos servers for your realm: krb1.spinlock.hr
+# (Make sure your DNS resolves krb1.spinlock.hr to
+# the NETWORK IP of the server, NOT 127.0.0.1!). Hint is given in
+# the section called “Conventions”.
+
+Administrative server for your Kerberos realm: krb1.spinlock.hr
+# (Make sure your DNS resolves krb1.spinlock.hr to
+# the NETWORK IP of the server, NOT 127.0.0.1!). Same hint as above.
+
+Create the Kerberos KDC configuration automatically? Yes
+
+Run the Kerberos V5 administration daemon (kadmind)? Yes
+----------------------------------------------
+To create the Kerberos realm, invoke:
+
+2.sudo krb5_newrealm
+
+This script should be run on the master KDC/admin server to initialize
+a Kerberos realm.  It will ask you to type in a master key password.
+This password will be used to generate a key that is stored in
+/etc/krb5kdc/stash.  You should try to remember this password, but it
+is much more important that it be a strong password than that it be
+remembered.  However, if you lose the password and /etc/krb5kdc/stash,
+you cannot decrypt your Kerberos database.
+Loading random data
+Initializing database '/var/lib/krb5kdc/principal' for realm 'SPINLOCK.HR',
+master key name 'K/M@SPINLOCK.HR'
+You will be prompted for the database Master Password.
+It is important that you NOT FORGET this password.
+
+Enter KDC database master key: PASSWORD
+
+Re-enter KDC database master key to verify: PASSWORD
+--------------------------------------------------
+
+Now that the realm has been created, we need to adjust the Kerberos config file, /etc/krb5.conf. That file should to be the same on all Kerberos servers and clients belonging to the same realm.
+
+/etc/krb5.conf is split into sections; you should search for section "[domain_realm]" (not "[realms]") and append your definitions:
+
+.spinlock.hr = SPINLOCK.HR
+spinlock.hr = SPINLOCK.HR
+
+
+
+At the bottom of the file, you should add the logging section:
+
+[logging]
+	kdc = FILE:/var/log/kerberos/krb5kdc.log
+	admin_server = FILE:/var/log/kerberos/kadmin.log
+	default = FILE:/var/log/kerberos/krb5lib.log
+
+
+
+To create the logging directory and set up permissions, run:
+
+sudo mkdir /var/log/kerberos
+sudo touch /var/log/kerberos/{krb5kdc,kadmin,krb5lib}.log
+sudo chmod -R 750  /var/log/kerberos
+
+You do not need to restart the log monitoring command you ran earlier (see the section called “Conventions”) — the tail -F command will pick up new log files from the the kerberos/ directory automatically.
+
+To apply changes to the Kerberos server, run:
+
+sudo invoke-rc.d krb5-admin-server restart
+sudo invoke-rc.d krb5-kdc restart
+--------------------------------------------------------------------
+
+sudo kadmin.local
+>listprincs
+>quit
+
+edit /etc/krb5kdc/kadm5.acl as follows
+
+*/admin *
+
+sudo invoke-rc.d krb5-admin-server restart
+
+--------------------------------------------------------------------
+
+sudo apt-get install krb5-{admin-server,kdc}
+
+kdc for as tgt and tgs database
+admin-server kerberos masterserver
+
+kdb5_util create -s -r RAVI.KR
+
+sudo apt-get purge libgssapi-krb5-2:amd64
+
+sudo apt-get purge {libgssapi-krb5-2:i386,libkrb5-26-heimdal:amd64,libkrb5-3:amd64,libkrb5-3:i386,libkrb5support0:amd64,libkrb5support0:i386}
+				
+sudo apt-get purge libgssapi-krb5-2:amd64
+sudo apt autoremove
+
+
+
