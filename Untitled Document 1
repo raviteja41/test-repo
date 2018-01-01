@@ -1,0 +1,236 @@
+Service 	Version 	Description
+HDFS
+	2.7.3 	Apache Hadoop Distributed File System
+YARN + MapReduce2
+	2.7.3 	Apache Hadoop NextGen MapReduce (YARN)
+Tez
+	0.7.0 	Tez is the next generation Hadoop Query Processing framework written on top of YARN.
+Hive
+	1.2.1000 	Data warehouse system for ad-hoc queries & analysis of large datasets and table & storage management service
+HBase
+	1.1.2 	A Non-relational distributed database, plus Phoenix, a high performance SQL layer for low latency applications.
+Pig
+	0.16.0 	Scripting platform for analyzing large datasets
+Sqoop
+	1.4.6 	Tool for transferring bulk data between Apache Hadoop and structured data stores such as relational databases
+Oozie
+	4.2.0 	System for workflow coordination and execution of Apache Hadoop jobs. This also includes the installation of the optional Oozie Web Console which relies on and will install the ExtJS Library.
+ZooKeeper
+	3.4.6 	Centralized service which provides highly reliable distributed coordination
+Falcon
+	0.10.0 	Data management and processing platform
+Storm
+	1.1.0 	Apache Hadoop Stream processing framework
+Flume
+	1.5.2 	A distributed service for collecting, aggregating, and moving large amounts of streaming data into HDFS
+Accumulo
+	1.7.0 	Robust, scalable, high performance distributed key/value store.
+Ambari Infra
+	0.1.0 	Core shared service used by Ambari managed components.
+Ambari Metrics
+	0.1.0 	A system for metrics collection that provides storage and retrieval capability for metrics collected from the cluster
+Atlas
+	0.8.0 	Atlas Metadata and Governance platform
+Kafka
+	0.10.1 	A high-throughput distributed messaging system
+Knox
+	0.12.0 	Provides a single point of authentication and access for Apache Hadoop services in a cluster
+Log Search
+	0.5.0 	Log aggregation, analysis, and visualization for Ambari managed services. This service is Technical Preview.
+SmartSense
+	1.4.3.2.6.0.0-267 	SmartSense - Hortonworks SmartSense Tool (HST) helps quickly gather configuration, metrics, logs from common HDP services that aids to quickly troubleshoot support cases and receive cluster-specific recommendations.
+Spark
+	1.6.3 	Apache Spark is a fast and general engine for large-scale data processing.
+Spark2
+	2.2.0 	Apache Spark is a fast and general engine for large-scale data processing
+Zeppelin Notebook
+	0.7.3 	A web-based notebook that enables interactive data analytics. It enables you to make beautiful data-driven, interactive and collaborative documents with SQL, Scala and more.
+Druid
+	0.10.1 	A fast column-oriented distributed data store.
+Mahout
+	0.9.0 	Project of the Apache Software Foundation to produce free implementations of distributed or otherwise scalable machine learning algorithms focused primarily in the areas of collaborative filtering, clustering and classification
+Slider
+	0.92.0 	A framework for deploying, managing and monitoring existing distributed applications on YARN.
+Superset
+	0.15.0 	Superset is a data exploration platform designed to be visual, intuitive and interactive.
+
+
+
+
+
+
+
+
+
+Assign Slaves and Clients
+Assign slave and client components to hosts you want to run them on.
+Hosts that are assigned master components are shown with ✵.
+"Client" will install HDFS Client, YARN Client, MapReduce2 Client, Tez Client, HCat Client, Hive Client, Pig Client, ZooKeeper Client, Spark2 Client and Slider Client.
+Host 	all  |  none 	all  |  none 	all  |  none 	all  |  none 	all  |  none 	all  |  none
+std-2130.tibildomain ✵ 	
+DataNode
+	
+NFSGateway
+	
+NodeManager
+	
+Livy for Spark2 Server
+	
+Spark2 Thrift Server
+	
+Client
+
+t-dt-009.tibildomain ✵ 	
+DataNode
+	
+NFSGateway
+	
+NodeManager
+	
+Livy for Spark2 Server
+	
+Spark2 Thrift Server
+	
+Client
+
+t-dt-006.tibildomain ✵ 	
+DataNode
+	
+NFSGateway
+	
+NodeManager
+	
+Livy for Spark2 Server
+	
+Spark2 Thrift Server
+	
+Client
+
+
+
+Configurations
+
+Some service configurations are not configured properly. We recommend you review and change the highlighted configuration values. Are you sure you want to proceed without correcting configurations?
+Type 	Service 	Property 	Value 	Description
+Warning 	HDFS 	dfs.datanode.du.reserved 	6707609600 	
+Value is less than the recommended default of 47581672960
+Reserved space in bytes per volume. Always leave this much space free for non dfs use. 
+
+
+
+Admin Name : admin
+
+Cluster Name : raviteja
+
+Total Hosts : 3 (3 new)
+
+Repositories:
+
+    redhat7 (HDP-2.6):
+    http://192.168.1.167/hdp/HDP/centos7/2.6.3.0-235/?prefix=HDP/centos7/2.x/
+
+    redhat7 (HDP-UTILS-1.1.0.21):
+    http://192.168.1.167/hdp/HDP-UTILS-1.1.0.21-centos7/
+
+Services:
+
+    HDFS
+        DataNode : 3 hosts
+        NameNode : std-2130.tibildomain
+        NFSGateway : 3 hosts
+        SNameNode : t-dt-009.tibildomain
+    YARN + MapReduce2
+        App Timeline Server : t-dt-006.tibildomain
+        NodeManager : 3 hosts
+        ResourceManager : t-dt-009.tibildomain
+    Tez
+        Clients : 3 hosts
+    Hive
+        Metastore : t-dt-006.tibildomain
+        HiveServer2 : t-dt-009.tibildomain
+        WebHCat Server : t-dt-009.tibildomain
+        Database : New MySQL Database
+    Pig
+        Clients : 3 hosts
+    ZooKeeper
+        Server : 3 hosts
+    Ambari Metrics
+        Metrics Collector : t-dt-009.tibildomain
+        Grafana : std-2130.tibildomain
+    SmartSense
+        Activity Analyzer : std-2130.tibildomain
+        Activity Explorer : std-2130.tibildomain
+        HST Server : std-2130.tibildomain
+    Spark2
+        Livy for Spark2 Server : 3 hosts
+        History Server : std-2130.tibildomain
+        Thrift Server : 3 hosts
+    Slider
+        Clients : 3 hosts
+
+/var/lib/ambari-agent/data/output-20.txt
+
+cat /var/lib/ambari-agent/data/errors-20.txt
+
+
+cd /etc/yum.repos.d/
+rm ambari-hdp-1.repo
+yum clean all
+rm -rf /var/cache/yum
+yum repolist
+yum update
+
+
+Admin Name : admin
+
+Cluster Name : raviteja
+
+Total Hosts : 3 (3 new)
+
+Repositories:
+
+    redhat7 (HDP-2.6):
+    http://std-2130.tibildomain/hdp/HDP/centos7/2.6.3.0-235/
+
+    redhat7 (HDP-UTILS-1.1.0.21):
+    http://192.168.1.167/hdp/HDP-UTILS-1.1.0.21-centos7/
+
+Services:
+
+    HDFS
+        DataNode : 3 hosts
+        NameNode : std-2130.tibildomain
+        NFSGateway : 3 hosts
+        SNameNode : t-dt-009.tibildomain
+    YARN + MapReduce2
+        App Timeline Server : t-dt-006.tibildomain
+        NodeManager : 3 hosts
+        ResourceManager : t-dt-009.tibildomain
+    Tez
+        Clients : 3 hosts
+    Hive
+        Metastore : t-dt-006.tibildomain
+        HiveServer2 : t-dt-009.tibildomain
+        WebHCat Server : t-dt-009.tibildomain
+        Database : New MySQL Database
+    Pig
+        Clients : 3 hosts
+    ZooKeeper
+        Server : 3 hosts
+    Ambari Metrics
+        Metrics Collector : t-dt-009.tibildomain
+        Grafana : std-2130.tibildomain
+    SmartSense
+        Activity Analyzer : std-2130.tibildomain
+        Activity Explorer : std-2130.tibildomain
+        HST Server : std-2130.tibildomain
+    Spark2
+        Livy for Spark2 Server : 3 hosts
+        History Server : std-2130.tibildomain
+        Thrift Server : 3 hosts
+    Slider
+        Clients : 3 hosts
+
+http://pro.benjaminste.in/post/318453669/increase-the-number-of-file-descriptors-on-centos
+https://community.hortonworks.com/questions/70679/i-am-getting-this-error-unauthorized-connection-fo.html
+https://community.hortonworks.com/questions/9384/unauthorized-connection-for-super-user.html
